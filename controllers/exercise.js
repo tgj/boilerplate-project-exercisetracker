@@ -50,11 +50,11 @@ exports.exercise_create_post = asyncHandler(async (req, res, next) => {
           .save()
           .then((_) => {
             res.json({
-              _id: _id,
               username: user.username,
               description,
               duration: exercise.duration,
               date: exercise.date.toDateString(),
+              _id,
             });
           })
           .catch((err) => {
