@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const { body } = require("express-validator");
+const { body, oneOf } = require("express-validator");
 
 require("dotenv").config();
 
@@ -28,7 +28,21 @@ app.post(
 
 app.get("/api/users", userController.user_list_get);
 
-app.post("/api/users/:_id/exercises", exerciseController.exercise_create_post);
+const yyyyMMddRegex = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+
+app.post(
+  "/api/users/:_id/exercises",
+  [
+    body("_id").notEmpty(),
+    body("description").notEmpty(),
+    body("duration").isInt(),
+    oneOf([
+      body("date").matches(yyyyMMddRegex).isDate(),
+      body("date").isEmpty(),
+    ]),
+  ],
+  exerciseController.exercise_create_post
+);
 
 app.get("/api/users/:_id/logs", exerciseController.exercise_logs_get);
 
