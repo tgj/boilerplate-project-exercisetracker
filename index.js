@@ -43,7 +43,18 @@ app.post(
   exerciseController.exercise_create_post
 );
 
-app.get("/api/users/:_id/logs", exerciseController.exercise_logs_get);
+app.get(
+  "/api/users/:_id/logs",
+  [
+    oneOf([
+      body("from").matches(yyyyMMddRegex).isDate(),
+      body("from").isEmpty(),
+    ]),
+    oneOf([body("to").matches(yyyyMMddRegex).isDate(), body("to").isEmpty()]),
+    oneOf([body("limit").isInt().isFloat({ min: 1 }), body("limit").isEmpty()]),
+  ],
+  exerciseController.exercise_logs_get
+);
 
 // Respond not found to all the wrong routes
 app.use(function (req, res, next) {
