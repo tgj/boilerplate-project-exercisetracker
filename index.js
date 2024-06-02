@@ -30,6 +30,8 @@ app.get("/api/users", userController.user_list_get);
 
 app.post("/api/users/:_id/exercises", exerciseController.exercise_create_post);
 
+app.get("/api/users/:_id/logs", exerciseController.exercise_logs_get);
+
 // Respond not found to all the wrong routes
 app.use(function (req, res, next) {
   res.status(404);
