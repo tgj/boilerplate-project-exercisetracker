@@ -12,7 +12,7 @@ exports.user_create_post = asyncHandler(async (req, res, next) => {
     return res.json({ error: "invalid username" });
   }
 
-  const username = req.query.username;
+  const username = req.body.username;
 
   User.findOne({ username })
     .then((doc) => {
@@ -27,7 +27,10 @@ exports.user_create_post = asyncHandler(async (req, res, next) => {
               _id: doc._id,
             });
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            next(err);
+          });
       } else {
         console.log("Username exists, sending error response...");
         res.json({
@@ -37,5 +40,6 @@ exports.user_create_post = asyncHandler(async (req, res, next) => {
     })
     .catch((err) => {
       console.log(err);
+      next(err);
     });
 });
