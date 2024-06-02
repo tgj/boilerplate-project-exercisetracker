@@ -41,6 +41,12 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
+        
+    - name: 'Create env file'
+      run: |
+          touch .env
+          echo MONGO_URI=${{ secrets.MONGO_URI }} >> .env
+          cat .env
 
     - name: npm install, build, and test
       run: |
