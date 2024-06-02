@@ -33,7 +33,6 @@ const yyyyMMddRegex = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
 app.post(
   "/api/users/:_id/exercises",
   [
-    // body("_id").notEmpty(),
     body("description").notEmpty(),
     body("duration").isInt(),
     oneOf([
