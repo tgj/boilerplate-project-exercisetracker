@@ -76,7 +76,7 @@ exports.exercise_logs_get = asyncHandler(async (req, res, next) => {
     }
 
     const { _id } = req.params;
-    const { limit, from, to } = req.body;
+    const { limit, from, to } = req.query;
 
     const user = await User.findById(_id);
     if (!user) {
@@ -105,7 +105,7 @@ exports.exercise_logs_get = asyncHandler(async (req, res, next) => {
 
     return res.json({
       username: user.username,
-      count: limit || exercises.length,
+      count: exercises.length,
       _id,
       log: exercises.map((exer) => {
         return {

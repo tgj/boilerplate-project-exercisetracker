@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const { body, oneOf } = require("express-validator");
+const { body, oneOf, query } = require("express-validator");
 
 require("dotenv").config();
 
@@ -47,11 +47,14 @@ app.get(
   "/api/users/:_id/logs",
   [
     oneOf([
-      body("from").matches(yyyyMMddRegex).isDate(),
-      body("from").isEmpty(),
+      query("from").matches(yyyyMMddRegex).isDate(),
+      query("from").isEmpty(),
     ]),
-    oneOf([body("to").matches(yyyyMMddRegex).isDate(), body("to").isEmpty()]),
-    oneOf([body("limit").isInt().isFloat({ min: 1 }), body("limit").isEmpty()]),
+    oneOf([query("to").matches(yyyyMMddRegex).isDate(), query("to").isEmpty()]),
+    oneOf([
+      query("limit").isInt().isFloat({ min: 1 }),
+      query("limit").isEmpty(),
+    ]),
   ],
   exerciseController.exercise_logs_get
 );
