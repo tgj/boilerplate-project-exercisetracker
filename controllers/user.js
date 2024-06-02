@@ -1,9 +1,6 @@
 const User = require("../models/user");
-const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const { validationResult } = require("express-validator");
-
-mongoose.connect(process.env.MONGO_URI);
 
 exports.user_create_post = asyncHandler(async (req, res, next) => {
   const validationErrors = validationResult(req);
@@ -37,6 +34,22 @@ exports.user_create_post = asyncHandler(async (req, res, next) => {
           error: "username exists",
         });
       }
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+});
+
+exports.user_list_get = asyncHandler(async (_, res, next) => {
+  User.find()
+    .then((doc) => {
+      res.json(
+        doc.map((el) => ({
+          _id: el.id,
+          username: el.username,
+        }))
+      );
     })
     .catch((err) => {
       console.log(err);

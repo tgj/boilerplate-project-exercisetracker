@@ -25,6 +25,8 @@ app.post(
   userController.user_create_post
 );
 
+app.get("/api/users", userController.user_list_get);
+
 // Respond not found to all the wrong routes
 app.use(function (req, res, next) {
   res.status(404);
