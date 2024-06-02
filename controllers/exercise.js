@@ -23,10 +23,26 @@ exports.exercise_create_post = asyncHandler(async (req, res, next) => {
       } else {
         console.log(`User with id: ${_id} found`);
 
+        const checkDate = (date) => {
+          if (!date) {
+            return new Date(Date.now());
+          } else {
+            const parts = date.split("-");
+            const year = parseInt(parts[0]);
+            const month = parseInt(parts[1]) - 1;
+            const day = parseInt(parts[2]);
+
+            const utcDate = new Date(Date.UTC(year, month, day));
+            return new Date(
+              utcDate.getTime() + utcDate.getTimezoneOffset() * 60000
+            );
+          }
+        };
+
         const exercise = new Exercise({
           description,
           duration: Number(duration),
-          date: date ? new Date(date) : new Date(),
+          date: checkDate(date),
         });
         user.exercises.push(exercise);
 
