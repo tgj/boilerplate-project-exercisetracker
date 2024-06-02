@@ -53,6 +53,20 @@ app.post("/api/users/:_id/exercises", async (req, res) => {
     return res.json({ error: "Operation failed" });
   }
 });
+const yyyyMMddRegex = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+
+app.post(
+  "/api/users/:_id/exercises",
+  [
+    body("description").notEmpty(),
+    body("duration").isInt(),
+    oneOf([
+      body("date").matches(yyyyMMddRegex).isDate(),
+      body("date").isEmpty(),
+    ]),
+  ],
+  exerciseController.exercise_create_post,
+);
 
 app.get("/api/users/:_id/logs", exerciseController.exercise_logs_get);
 
