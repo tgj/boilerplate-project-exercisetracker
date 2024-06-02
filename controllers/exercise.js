@@ -23,26 +23,10 @@ exports.exercise_create_post = asyncHandler(async (req, res, next) => {
       } else {
         console.log(`User with id: ${_id} found`);
 
-        const checkDate = (date) => {
-          if (!date) {
-            return new Date(Date.now()).toDateString();
-          } else {
-            const parts = date.split("-");
-            const year = parseInt(parts[0]);
-            const month = parseInt(parts[1]) - 1;
-            const day = parseInt(parts[2]);
-
-            const utcDate = new Date(Date.UTC(year, month, day));
-            return new Date(
-              utcDate.getTime() + utcDate.getTimezoneOffset() * 60000
-            ).toDateString();
-          }
-        };
-
         const exercise = new Exercise({
           description,
-          duration,
-          date: checkDate(date),
+          duration: Number(duration),
+          date: date ? new Date(date) : new Date(),
         });
         user.exercises.push(exercise);
 
@@ -53,8 +37,8 @@ exports.exercise_create_post = asyncHandler(async (req, res, next) => {
               _id: _id,
               username: user.username,
               description,
-              duration,
-              date: exercise.date,
+              duration: exercise.duration,
+              date: exercise.date.toDateString(),
             });
           })
           .catch((err) => {
