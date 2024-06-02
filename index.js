@@ -18,6 +18,7 @@ app.get("/", (req, res) => {
 mongoose.connect(process.env.MONGO_URI);
 
 const userController = require("./controllers/user.js");
+const exerciseController = require("./controllers/exercise.js");
 
 app.post(
   "/api/users",
@@ -26,6 +27,8 @@ app.post(
 );
 
 app.get("/api/users", userController.user_list_get);
+
+app.post("/api/users/:_id/exercises", exerciseController.exercise_create_post);
 
 // Respond not found to all the wrong routes
 app.use(function (req, res, next) {
