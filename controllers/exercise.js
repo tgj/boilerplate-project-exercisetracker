@@ -10,7 +10,8 @@ exports.exercise_create_post = asyncHandler(async (req, res, next) => {
     return res.json({ error: "invalid request" });
   }
 
-  const { _id, description, duration, date } = req.body;
+  const { description, duration, date } = req.body;
+  const _id = req.body[":_id"] || req.params._id;
 
   User.findById(_id)
     .then((user) => {
@@ -49,12 +50,12 @@ exports.exercise_create_post = asyncHandler(async (req, res, next) => {
         user
           .save()
           .then((_) => {
-            res.json({
+            return res.json({
               username: user.username,
-              description,
+              description: exercise.description,
               duration: exercise.duration,
               date: exercise.date.toDateString(),
-              _id,
+              _id: user._id,
             });
           })
           .catch((err) => {
