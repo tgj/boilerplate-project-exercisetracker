@@ -23,7 +23,7 @@ const exerciseController = require("./controllers/exercise.js");
 app.post(
   "/api/users",
   [body("username").notEmpty()],
-  userController.user_create_post
+  userController.user_create_post,
 );
 
 app.get("/api/users", userController.user_list_get);

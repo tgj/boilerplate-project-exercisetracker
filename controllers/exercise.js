@@ -36,7 +36,7 @@ exports.exercise_create_post = asyncHandler(async (req, res, next) => {
 
         const utcDate = new Date(Date.UTC(year, month, day));
         return new Date(
-          utcDate.getTime() + utcDate.getTimezoneOffset() * 60000
+          utcDate.getTime() + utcDate.getTimezoneOffset() * 60000,
         );
       }
     };
@@ -47,7 +47,7 @@ exports.exercise_create_post = asyncHandler(async (req, res, next) => {
       date: checkDate(date),
     });
     user.exercises.push(exercise);
-    
+
     user
       .save()
       .then((_) => {
@@ -63,7 +63,6 @@ exports.exercise_create_post = asyncHandler(async (req, res, next) => {
         console.log(err);
         next(err);
       });
-    
   } catch (error) {
     console.error(err);
     return res.json({ error });
