@@ -23,41 +23,17 @@ const exerciseController = require("./controllers/exercise.js");
 app.post(
   "/api/users",
   [body("username").notEmpty()],
-  userController.user_create_post,
+  userController.user_create_post
 );
 
 app.get("/api/users", userController.user_list_get);
 
-const User = require("./models/user");
-const { Exercise } = require("./models/exercise");
-
-app.post("/api/users/:_id/exercises", async (req, res) => {
-  try {
-    const user = await User.findById(req.body[":_id"] || req.params._id);
-    if (!user) return res.json({ error: "user doesn't exist" });
-    const newExercise = await Exercise.create({
-      description: req.body.description,
-      duration: req.body.duration,
-      date: req.body.date ? new Date(req.body.date) : new Date(),
-    });
-
-    return res.json({
-      _id: user._id,
-      username: user.username,
-      date: newExercise.date.toDateString(),
-      duration: newExercise.duration,
-      description: newExercise.description,
-    });
-  } catch (error) {
-    console.error(error);
-    return res.json({ error: "Operation failed" });
-  }
-});
 const yyyyMMddRegex = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
 
 app.post(
   "/api/users/:_id/exercises",
   [
+    // body("_id").notEmpty(),
     body("description").notEmpty(),
     body("duration").isInt(),
     oneOf([
@@ -65,7 +41,7 @@ app.post(
       body("date").isEmpty(),
     ]),
   ],
-  exerciseController.exercise_create_post,
+  exerciseController.exercise_create_post
 );
 
 app.get("/api/users/:_id/logs", exerciseController.exercise_logs_get);

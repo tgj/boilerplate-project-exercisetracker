@@ -35,7 +35,7 @@ exports.exercise_create_post = asyncHandler(async (req, res, next) => {
 
         const utcDate = new Date(Date.UTC(year, month, day));
         return new Date(
-          utcDate.getTime() + utcDate.getTimezoneOffset() * 60000,
+          utcDate.getTime() + utcDate.getTimezoneOffset() * 60000
         );
       }
     };
