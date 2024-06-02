@@ -26,7 +26,9 @@ exports.exercise_create_post = asyncHandler(async (req, res, next) => {
         const exercise = new Exercise({
           description,
           duration,
-          date: date ? new Date(date) : new Date(),
+          date: date
+            ? new Date(date).toDateString()
+            : new Date().toDateString(),
         });
         user.exercises.push(exercise);
 
@@ -38,7 +40,7 @@ exports.exercise_create_post = asyncHandler(async (req, res, next) => {
               username: user.username,
               description,
               duration,
-              date: exercise.date.toDateString(),
+              date: exercise.date,
             });
           })
           .catch((err) => {
