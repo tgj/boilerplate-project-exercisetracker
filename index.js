@@ -59,6 +59,12 @@ app.get(
   exerciseController.exercise_logs_get
 );
 
+app.get("/health", (_, res) => {
+  res.json({
+    status: "ok",
+  });
+});
+
 // Respond not found to all the wrong routes
 app.use(function (req, res, next) {
   res.status(404);
